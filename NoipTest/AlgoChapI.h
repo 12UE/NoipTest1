@@ -1,6 +1,5 @@
 #pragma once
-#include<iostream>
-#include<string>
+
 //高精度计算章节
 class HighPrecisionCalc {
 private:
