@@ -116,4 +116,71 @@ namespace nonstd {
 		//逆序
 		ReversDatas(datas, length);
 	}
+#include<iostream>
+	using namespace std;
+
+	void QuickSortIMPL(int a[], const int left, const int right)
+	{
+		if (left < right)
+		{
+			//选枢轴
+			int i = left;
+			int j = right + 1;
+			int pivot = a[left];  //pivot为枢轴，从数组左边开始
+
+			//进行划分
+			do {
+				do i++; while (a[i] < pivot);  //找到比枢轴大的
+				do j--; while (a[j] > pivot);  //找到比枢轴小的
+				if (i < j){
+					std::swap(a[i], a[j]);  //小的放左边，大的放右边
+				}
+			} while (i < j);
+			std::swap(a[left], a[j]);
+			QuickSortIMPL(a, left, j - 1);
+			QuickSortIMPL(a, j + 1, right);
+		}
+	}
+	//实现快速排序
+	void QuickSort(int datas[], int length) {
+		return QuickSortIMPL(datas, 0, length-1);
+	}
+	//归并排序
+	void Merge(int datas[], int pTemp[], int left, int nMid, int right) {
+		int i = left;
+		int j = nMid + 1;
+		int k = left;
+		while (i <= nMid && j <= right) {
+			if (datas[i] < datas[j]) {
+				pTemp[k++] = datas[i++];
+			}
+			else {
+				pTemp[k++] = datas[j++];
+			}
+		}
+		while (i <= nMid) {
+			pTemp[k++] = datas[i++];
+		}
+		while (j <= right) {
+			pTemp[k++] = datas[j++];
+		}
+		for (int i = left; i <= right; i++) {
+			datas[i] = pTemp[i];
+		}
+	}
+	void MergeSortImpl(int datas[], int pTemp[], int left, int right) {
+		if (left < right) {
+			int nMid = (left + right) / 2;
+			MergeSortImpl(datas, pTemp, left, nMid);
+			MergeSortImpl(datas, pTemp, nMid + 1, right);
+			Merge(datas, pTemp, left, nMid, right);
+		}
+	}
+	//实现归并排序
+	void MergeSort(int datas[], int length) {
+		int* pTemp = new int[length];
+		MergeSortImpl(datas, pTemp, 0, length - 1);
+		delete[] pTemp;
+	}
+	
 }

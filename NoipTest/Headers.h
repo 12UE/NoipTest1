@@ -6,3 +6,4 @@
 #include"Heap.h"
 #include"AlgoChapI.h"
 #include"AlgoChap2.h"
+#include"_SqList.h"

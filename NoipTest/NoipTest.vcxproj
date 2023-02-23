@@ -136,6 +136,7 @@
     <ClInclude Include="AlgoChapI.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="Headers.h" />
+    <ClInclude Include="_SqList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
