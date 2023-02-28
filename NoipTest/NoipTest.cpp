@@ -123,18 +123,131 @@ namespace nonstd {
 }
 #include<Windows.h>
 static nonstd::function<int> myMessageBoxA(MessageBoxA);
+template<typename T>
+class TreeNode {
+public:
+	T value;
+	TreeNode<T>* left;
+	TreeNode<T>* right;
+
+	TreeNode(T val) {
+		value = val;
+		left = nullptr;
+		right = nullptr;
+	}
+};
+
+template<typename T>
+class BinarySearchTree {
+private:
+	TreeNode<T>* root;
+
+	void destroy(TreeNode<T>* node) {
+		if (node != nullptr) {
+			destroy(node->left);
+			destroy(node->right);
+			delete node;
+		}
+	}
+
+	void insert(T value, TreeNode<T>*& node) {
+		if (node == nullptr) {
+			node = new TreeNode<T>(value);
+		}else if (value < node->value) {
+			insert(value, node->left);
+		}else {
+			insert(value, node->right);
+		}
+	}
+
+	void printInOrder(TreeNode<T>* node) {
+		if (node != nullptr) {
+			printInOrder(node->left);
+			std::cout << node->value << " ";
+			printInOrder(node->right);
+		}
+	}
+	void printPreOrder(TreeNode<T>* node) {
+		if (node != nullptr) {
+			std::cout << node->value << " ";
+			printPreOrder(node->left);
+			printPreOrder(node->right);
+		}
+	}
+	void printPostOrder(TreeNode<T>* node) {
+		if (node != nullptr) {
+			printPostOrder(node->left);
+			printPostOrder(node->right);
+			std::cout << node->value << " ";
+		}
+	}
+
+	TreeNode<T>* search(T value, TreeNode<T>* node) {
+		if (node == nullptr || node->value == value) {
+			return node;
+		}
+		else if (value < node->value) {
+			return search(value, node->left);
+		}
+		else {
+			return search(value, node->right);
+		}
+	}
+
+public:
+	BinarySearchTree() {
+		root = nullptr;
+	}
+
+	~BinarySearchTree() {
+		destroy(root);
+	}
+
+	void insert(T value) {
+		insert(value, root);
+	}
+
+	void printInOrder() {
+		printInOrder(root);
+		cout << endl;
+	}
+	void printPreOrder() {
+		printPreOrder(root);
+		cout << endl;
+	}
+	void printPostOrder() {
+		printPostOrder(root);
+		cout << endl;
+	}
+
+	TreeNode<T>* search(T value) {
+		return search(value, root);
+	}
+};
 int main(){
-	//nonstd::function<int> pmsgbox(MessageBoxA);
-	//auto pbox = &pmsgbox;
-	////输出函数地址
-	//std::cout << pbox << std::endl;
-	////输出MessageBoxA地址
-	//std::cout << &MessageBoxA << std::endl;
-	//
-	////调用
-	//pmsgbox(NULL, "HelloWordl", "TEXT", MB_OK);
-	//print(5);
-	
-	myMessageBoxA(NULL, "HelloWordl", "TEXT", MB_OK);
-    return 0;
+	BinarySearchTree<int> bst;
+	bst.insert(5);
+	bst.insert(3);
+	bst.insert(8);
+	bst.insert(1);
+	bst.insert(4);
+	bst.insert(7);
+	bst.insert(9);
+	/*
+		    5
+		   / \
+		  3   8
+		 / \ / \
+		1  4 7  9
+	*/
+
+	bst.printPreOrder();
+
+	TreeNode<int>* node = bst.search(3);
+	if (node != nullptr) {
+		cout << "Found node with value " << node->value << endl;
+	}else {
+		cout << "Node not found" << endl;
+	}
+	return 0;
 }
